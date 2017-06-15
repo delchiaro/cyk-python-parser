@@ -37,19 +37,27 @@ class Parser(metaclass=ABCMeta):
         token_list = [] # type: Symbol
         parse_str = string_of_terms
         tokenized_something = True
-        while len(parse_str) > 0 and tokenized_something is True:
-            tokenized_something = False
+
+        if len(parse_str) == 0:    # If the parse string is empty:
             for term in sort_terms:
-                if ignore_spaces and parse_str.startswith(' '):
-                    parse_str = parse_str[1:]
-                if parse_str.startswith(term):
+                if term == '':
                     token_list.append(Term(term))
-                    parse_str = parse_str[len(term):]
-                    tokenized_something = True
-                    break
-        if len(parse_str) > 0:
-                raise TokenizationError("Cannot finish tokenization of input string: '{}': can't tokenize '{}'"
-                                 " (one or more undefined terminals in the string)".format(string_of_terms, parse_str))
+
+        else:
+            while len(parse_str) > 0 and tokenized_something is True:
+                tokenized_something = False
+                for term in sort_terms:
+                    if ignore_spaces and parse_str.startswith(' '):
+                        parse_str = parse_str[1:]
+                    if parse_str.startswith(term) and term is not '':
+                        token_list.append(Term(term))
+                        parse_str = parse_str[len(term):]
+                        tokenized_something = True
+                        break
+            if len(parse_str) > 0:
+                    raise TokenizationError("Cannot finish tokenization of input string: '{}': can't tokenize '{}'"
+                                     " (one or more undefined terminals in the string)".format(string_of_terms, parse_str))
+
 
         return token_list
 

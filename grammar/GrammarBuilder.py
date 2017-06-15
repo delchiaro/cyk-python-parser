@@ -156,19 +156,17 @@ class CnfGrammarBuilder(GrammarBuilder):
             start_prod=False
 
         if len(prod.r_symbols) == 1:
-            if start_prod:
-                if prod.r_symbols[0].type == SymbolType.TERMINAL and prod.r_symbols[0].name != '':
-                    raise ValueError("Error in production {}: CNF Grammar's productions containings start symbol must "
-                                     "contain two variables in the right side or must contain an empty terminal.".format(prod))
-
+            # if start_prod:
+            #     if prod.r_symbols[0].type == SymbolType.TERMINAL and prod.r_symbols[0].name != '':
+            #         raise ValueError("Error in production {}: CNF Grammar's productions containings start symbol must "
+            #                          "contain two variables in the right side or must contain an empty terminal.".format(prod))
             if prod.r_symbols[0].type != SymbolType.TERMINAL:
-                raise ValueError(
-                    "Error in production {}: CNF Grammar's productions with 1 symbols must contains a terminal.".format(
-                        prod))
-            elif prod.r_symbols[0].name == "":
-                raise ValueError(
-                    "Error in production {}: CNF Grammar's productions with 1 symbols must contains a NON-EMPTY terminal.".format(
-                        prod))
+                    raise ValueError(
+                        "Error in production {}: CNF Grammar's productions with 1 symbols must contains a terminal.".format(prod))
+            else:
+                if prod.r_symbols[0].name == "" and not start_prod:
+                    raise ValueError(
+                        "Error in production {}: CNF Grammar's productions with 1 symbols must contains a NON-EMPTY terminal.".format(prod))
 
 
         elif len(prod.r_symbols) == 2:

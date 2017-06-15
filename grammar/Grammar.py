@@ -1,7 +1,8 @@
 import copy
-import itertools
-from enum import Enum
+
 from typing import List, Dict
+
+from grammar import Term, Var
 from .GrammarBuilder import GrammarBuilder, CnfGrammarBuilder
 
 
@@ -30,6 +31,9 @@ class Grammar:
         for ter in self.terminals:
             ls.append((Term(ter)))
         return ls
+
+
+
 
 class CnfGrammar(Grammar):
     def __init__(self, grammar_builder: CnfGrammarBuilder):
